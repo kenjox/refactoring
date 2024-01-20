@@ -1,5 +1,3 @@
-import { plays, invoices } from './data.js';
-
 export function statement(invoice, plays) {
   let totalAmount = 0;
   let volumeCredits = 0;
@@ -10,10 +8,8 @@ export function statement(invoice, plays) {
     minimumFractionDigits: 2,
   }).format;
 
-  for (let perf of invoice.performances) {
-    const play = plays[perf.playID];
+  function amountFor(perf, play) {
     let thisAmount = 0;
-
     switch (play.type) {
       case 'tragedy':
         thisAmount = 40000;
@@ -31,6 +27,13 @@ export function statement(invoice, plays) {
       default:
         throw new Error(`unknown type: ${play.type}`);
     }
+
+    return thisAmount;
+  }
+
+  for (let perf of invoice.performances) {
+    const play = plays[perf.playID];
+    let thisAmount = amountFor(perf, play);
 
     // add volume credits
     volumeCredits += Math.max(perf.audience - 30, 0);
@@ -50,6 +53,3 @@ export function statement(invoice, plays) {
   result += `You earned ${volumeCredits} credits\n`;
   return result;
 }
-
-const result = statement(invoices[0], plays);
-console.log(result);
