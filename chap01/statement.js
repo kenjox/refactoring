@@ -1,13 +1,5 @@
 import { createStatementData } from './create-statement-data.js';
 
-function usd(aNumber) {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2,
-  }).format(aNumber / 100);
-}
-
 export function statement(invoice, plays) {
   return renderPlainText(createStatementData(invoice, plays));
 }
@@ -40,4 +32,12 @@ function renderHtml(data) {
   result += `<p>Amount owed is <em>${usd(data.totalAmount)}</em></p>\n`;
   result += `<p>You earned <em>${data.totalVolumeCredits}</em> credits</p>\n`;
   return result;
+}
+
+function usd(aNumber) {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 2,
+  }).format(aNumber / 100);
 }
