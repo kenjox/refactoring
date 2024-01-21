@@ -1,9 +1,15 @@
 export function statement(invoice, plays) {
+  return renderPlainText(createStatementData(invoice, plays));
+}
+
+function createStatementData(invoice, plays) {
   const statementData = {};
   statementData.customer = invoice.customer;
   statementData.performances = invoice.performances.map(enrichPerformance);
   statementData.totalAmount = totalAmount(statementData);
   statementData.totalVolumeCredits = totalVolumeCredits(statementData);
+
+  return statementData;
 
   function enrichPerformance(aPerformance) {
     const result = Object.assign({}, aPerformance);
@@ -23,8 +29,6 @@ export function statement(invoice, plays) {
   function totalAmount(data) {
     return data.performances.reduce((total, perf) => total + perf.amount, 0);
   }
-
-  return renderPlainText(statementData, plays);
 
   function playFor(aPerformance) {
     return plays[aPerformance.playID];
