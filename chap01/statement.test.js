@@ -13,7 +13,7 @@ You earned 47 credits
 `;
 
 describe('statement', () => {
-  it('should print a statement', () => {
+  it('should render plain text statement', () => {
     const result = statement(invoices[0], plays);
     expect(result.trim()).toBe(expectedOutput.trim());
   });
